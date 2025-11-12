@@ -5,6 +5,7 @@ namespace UnityVolumeRendering
 {
     /// <summary>
     /// Camera controller for sample scene.
+    /// Rota solo sobre sí mismo, no coge el volumen de referencia
     /// </summary>
     public class CameraController : MonoBehaviour
     {

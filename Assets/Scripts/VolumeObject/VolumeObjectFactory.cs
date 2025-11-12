@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ namespace UnityVolumeRendering
 {
     public class VolumeObjectFactory
     {
+        public static GameObject rotationGUI;
+
         public static VolumeRenderedObject CreateObject(VolumeDataset dataset)
         {
             GameObject outerObject = new GameObject("VolumeRenderedObject_" + dataset.datasetName);
@@ -36,20 +39,27 @@ namespace UnityVolumeRendering
 
             meshRenderer.sharedMaterial.SetTexture("_DataTex", await dataset.GetDataTextureAsync(progressHandler));
 
+            
+
             return volObj;
         }
 
         private static void CreateObjectInternal(VolumeDataset dataset, GameObject meshContainer, MeshRenderer meshRenderer, VolumeRenderedObject volObj, GameObject outerObject, IProgressHandler progressHandler = null)
         {            
             meshContainer.transform.parent = outerObject.transform;
-            meshContainer.transform.localScale = Vector3.one;
-            meshContainer.transform.localPosition = Vector3.zero;
+            meshContainer.transform.localScale = UnityEngine.Vector3.one;
+            //meshContainer.transform.localPosition = Vector3.zero;
+            // para cambiar la posición del objeto de primeras
+            meshContainer.transform.localPosition = new UnityEngine.Vector3(0f, 0f, 60f);
             meshContainer.transform.parent = outerObject.transform;
-            outerObject.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+            outerObject.transform.localRotation = UnityEngine.Quaternion.Euler(0f, 0.0f, 0.0f);
 
             meshRenderer.sharedMaterial = new Material(meshRenderer.sharedMaterial);
             volObj.meshRenderer = meshRenderer;
             volObj.dataset = dataset;
+
+            if(rotationGUI != null & volObj!=null)
+                rotationGUI.SetActive(true);
 
             const int noiseDimX = 512;
             const int noiseDimY = 512;
@@ -80,7 +90,7 @@ namespace UnityVolumeRendering
         public static void SpawnCrossSectionPlane(VolumeRenderedObject volobj)
         {
             GameObject quad = GameObject.Instantiate((GameObject)Resources.Load("CrossSectionPlane"));
-            quad.transform.rotation = Quaternion.Euler(270.0f, 0.0f, 0.0f);
+            quad.transform.rotation = UnityEngine.Quaternion.Euler(270.0f, 0.0f, 0.0f);
             CrossSectionPlane csplane = quad.gameObject.GetComponent<CrossSectionPlane>();
             csplane.SetTargetObject(volobj);
             quad.transform.position = volobj.transform.position;
@@ -93,7 +103,7 @@ namespace UnityVolumeRendering
         public static void SpawnCutoutBox(VolumeRenderedObject volobj)
         {
             GameObject obj = GameObject.Instantiate((GameObject)Resources.Load("CutoutBox"));
-            obj.transform.rotation = Quaternion.Euler(270.0f, 0.0f, 0.0f);
+            obj.transform.rotation = UnityEngine.Quaternion.Euler(270.0f, 0.0f, 0.0f);
             CutoutBox cbox = obj.gameObject.GetComponent<CutoutBox>();
             cbox.SetTargetObject(volobj);
             obj.transform.position = volobj.transform.position;
@@ -105,7 +115,7 @@ namespace UnityVolumeRendering
         public static void SpawnCutoutSphere(VolumeRenderedObject volobj)
         {
             GameObject obj = GameObject.Instantiate((GameObject)Resources.Load("CutoutSphere"));
-            obj.transform.rotation = Quaternion.Euler(270.0f, 0.0f, 0.0f);
+            obj.transform.rotation = UnityEngine.Quaternion.Euler(270.0f, 0.0f, 0.0f);
             CutoutSphere cSphere = obj.gameObject.GetComponent<CutoutSphere>();
             cSphere.SetTargetObject(volobj);
             obj.transform.position = volobj.transform.position;

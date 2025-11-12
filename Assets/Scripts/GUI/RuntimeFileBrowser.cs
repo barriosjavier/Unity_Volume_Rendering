@@ -67,6 +67,16 @@ namespace UnityVolumeRendering
             dialogComp.currentDirectory = GetAbsoluteDirectoryPath(directory);
         }
 
+
+        public static void ChoosePositionDialog(DialogCallback resultCallback, string directory = "")
+        {
+            GameObject dialogObject = new GameObject("_ChoosePositionDialog");
+            RuntimeFileBrowserComponent dialogComp = dialogObject.AddComponent<RuntimeFileBrowserComponent>();
+            dialogComp.dialogMode = RuntimeFileBrowserComponent.DialogMode.OpenDirectory;
+            dialogComp.callback = resultCallback;
+            //dialogComp.currentDirectory = GetAbsoluteDirectoryPath(directory);
+        }
+
         private static string GetAbsoluteDirectoryPath(string path)
         {
             if (string.IsNullOrEmpty(path))

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+//using System.Threading.Tasks.Dataflow;
 using UnityEngine;
 
 namespace UnityVolumeRendering
@@ -13,6 +15,7 @@ namespace UnityVolumeRendering
     /// </summary>
     public class RuntimeGUI : MonoBehaviour
     {
+         
         private void OnGUI()
         {
             GUILayout.BeginVertical();
@@ -25,7 +28,7 @@ namespace UnityVolumeRendering
 
             if(GUILayout.Button("Import PARCHG dataset"))
             {
-                    RuntimeFileBrowser.ShowOpenFileDialog(OnOpenPARDatasetResultAsync, "DataFiles");
+                RuntimeFileBrowser.ShowOpenFileDialog(OnOpenPARDatasetResultAsync, "DataFiles");
             }
 
             if (GUILayout.Button("Import DICOM dataset"))
@@ -60,7 +63,7 @@ namespace UnityVolumeRendering
                 DistanceMeasureTool.ShowWindow();
             }
 
-            GUILayout.EndVertical();
+            GUILayout.EndVertical();   
         }
 
         private async void OnOpenPARDatasetResultAsync(RuntimeFileBrowser.DialogResult result)
@@ -136,7 +139,7 @@ namespace UnityVolumeRendering
                     if (dataset != null)
                     {
                         VolumeRenderedObject obj = await VolumeObjectFactory.CreateObjectAsync(dataset);
-                        obj.transform.position = new Vector3(numVolumesCreated, 0, 0);
+                        obj.transform.position = new UnityEngine.Vector3(numVolumesCreated, 0, 0);
                         numVolumesCreated++;
                     }
                 }
@@ -149,6 +152,15 @@ namespace UnityVolumeRendering
             {
                 IImageFileImporter importer = ImporterFactory.CreateImageFileImporter(ImageFileFormat.NIFTI);
                 VolumeDataset dataset = await importer.ImportAsync(result.path);
+
+                //aquí es donde vas a tener que elegir orientación del volumen y así
+                //esto tiene que estar aquí, a partir de ahí gestionar el resto del código.
+                /*
+                GameObject rotationGUI;
+
+                if(dataset.data!=null)
+                    rotationGUI.SetActive(true); 
+                    */
 
                 if (dataset != null)
                 {
@@ -182,10 +194,11 @@ namespace UnityVolumeRendering
         private void DespawnAllDatasets()
         {
             VolumeRenderedObject[] volobjs = GameObject.FindObjectsOfType<VolumeRenderedObject>();
-            foreach(VolumeRenderedObject volobj in volobjs)
+            foreach (VolumeRenderedObject volobj in volobjs)
             {
                 GameObject.Destroy(volobj.gameObject);
             }
         }
+
     }
 }

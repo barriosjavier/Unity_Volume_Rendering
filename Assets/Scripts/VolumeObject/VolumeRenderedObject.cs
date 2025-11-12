@@ -104,6 +104,7 @@ namespace UnityVolumeRendering
             return slicingPlaneComp;
         }
 
+
         public OverlayType GetOverlayType()
         {
             return this.overlayType;
