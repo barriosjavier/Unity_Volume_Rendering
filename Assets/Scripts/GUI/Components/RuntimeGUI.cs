@@ -150,28 +150,16 @@ namespace UnityVolumeRendering
         {
             if (!result.cancelled)
             {
-                IImageFileImporter importer = ImporterFactory.CreateImageFileImporter(ImageFileFormat.NIFTI);
-                VolumeDataset dataset = await importer.ImportAsync(result.path);
+                //primero cargamos el volumen 
+ 
+            IImageFileImporter importer = ImporterFactory.CreateImageFileImporter(ImageFileFormat.NIFTI);
+            VolumeDataset dataset = await importer.ImportAsync(result.path);
 
-                //aquí es donde vas a tener que elegir orientación del volumen y así
-                //esto tiene que estar aquí, a partir de ahí gestionar el resto del código.
-                /*
-                GameObject rotationGUI;
-
-                if(dataset.data!=null)
-                    rotationGUI.SetActive(true); 
-                    */
-
-                if (dataset != null)
-                {
-                    await VolumeObjectFactory.CreateObjectAsync(dataset);
-                }
-                else
-                {
-                    Debug.LogError("Failed to import datset");
-                }
-            }
+                //llamamos a la GUI de la orientación
+                OrientationLoadGUI.ShowWindow(dataset);
         }
+        }
+        
 
         private async void OnOpenNRRDDatasetResultAsync(RuntimeFileBrowser.DialogResult result)
         {

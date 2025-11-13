@@ -13,6 +13,7 @@ namespace UnityVolumeRendering
         {
             public enum DialogMode
             {
+                Orientation,
                 OpenFile,
                 OpenDirectory,
                 SaveFile

@@ -7,7 +7,6 @@ namespace UnityVolumeRendering
 {
     public class VolumeObjectFactory
     {
-        public static GameObject rotationGUI;
 
         public static VolumeRenderedObject CreateObject(VolumeDataset dataset)
         {
@@ -57,9 +56,6 @@ namespace UnityVolumeRendering
             meshRenderer.sharedMaterial = new Material(meshRenderer.sharedMaterial);
             volObj.meshRenderer = meshRenderer;
             volObj.dataset = dataset;
-
-            if(rotationGUI != null & volObj!=null)
-                rotationGUI.SetActive(true);
 
             const int noiseDimX = 512;
             const int noiseDimY = 512;
