@@ -209,14 +209,30 @@ namespace UnityVolumeRendering
 
             orientation=GetOrientationFromAffine(affine);
             int len_data = dimX * dimY * dimZ;
+            if (orientation[0] == 'L')
+            {
+                float[] newdata=new float[len_data];
+
+                // me falta estooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+               volumeDataset.data = newdata;
+
+            }
+            if (orientation[1] == 'P')
+            {
+                float[] newdata=new float[len_data];
+                // me falta estooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+
+                volumeDataset.data = newdata;
+            }
             if(orientation[2]=='S'){
 
-                float[] data_inv = new float[len_data];
+                float[] newdata=new float[len_data];
                 for (int i = 0; i < len_data-1; i++)
                 {
-                    data_inv[i] = pixelData[(len_data-1) - i];
+                    newdata[i] = pixelData[(len_data-1) - i];
                 }
-                volumeDataset.data = data_inv;
+                volumeDataset.data = newdata;
             }
 
             volumeDataset.FixDimensions();
