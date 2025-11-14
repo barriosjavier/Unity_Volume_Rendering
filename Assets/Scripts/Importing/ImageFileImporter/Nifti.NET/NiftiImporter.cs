@@ -209,22 +209,47 @@ namespace UnityVolumeRendering
 
             orientation=GetOrientationFromAffine(affine);
             int len_data = dimX * dimY * dimZ;
-            if (orientation[0] == 'L')
+            //aquí se lee al revés eje X
+            
+            if (orientation[0] == 'R')
             {
                 float[] newdata=new float[len_data];
+                for(int k = 0; k < dimZ; k++)
+                {
+                    for(int j = 0; j < dimY; j++)
+                    {
+                        for (int i = 0; i < dimX; i++)
+                        {
+                           newdata[i+j*dimX+k*dimX*dimY]=pixelData[(dimX-1)-i+j*dimX+k*dimX*dimY];
 
-                // me falta estooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+                       }
+                    }
+                }
+                
                volumeDataset.data = newdata;
+               pixelData=newdata;
 
             }
+            
             if (orientation[1] == 'P')
             {
                 float[] newdata=new float[len_data];
-                // me falta estooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+                // aquí se lee al revés eje Y
+                for(int k = 0; k < dimZ; k++)
+                {
+                    for(int j = 0; j < dimY; j++)
+                    {
+                        for (int i = 0; i < dimX; i++)
+                        {
+                            newdata[i+j*dimX+k*dimX*dimY]=pixelData[i+((dimY-1)-j)*dimX+k*dimX*dimY];
 
-
+                        }
+                    }
+                }
                 volumeDataset.data = newdata;
+                pixelData=newdata;
             }
+            
             if(orientation[2]=='S'){
 
                 float[] newdata=new float[len_data];
@@ -237,8 +262,6 @@ namespace UnityVolumeRendering
 
             volumeDataset.FixDimensions();
             volumeDataset.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
-
-            
 
             return volumeDataset;
         }
